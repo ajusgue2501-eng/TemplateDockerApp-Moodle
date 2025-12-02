@@ -1,5 +1,5 @@
 Param(
-    [string]$EnvFile = ".\env\dev.env",
+    [string]$EnvFile = ".\env\dev.apachephp.env",
     [string]$Dockerfile = "docker/http/apache+php/apache-php.dev.dockerfile",
     [string]$Tag = "apachephp:dev"
 )
@@ -25,7 +25,7 @@ foreach ($line in $lines) {
     $buildArgs += "$k=$v"
 }
 
-$argsSTR = @('build', '--no-cache','-f', $Dockerfile, '-t', $Tag) + $buildArgs + '.'
+$argsSTR = @('build', '--no-cache', '-f', $Dockerfile, '-t', $Tag) + $buildArgs + '.'
 
 Write-Host "Ejecutando: docker $($argsSTR -join ' ')" & docker @argsSTR
 $code = $LASTEXITCODE
@@ -33,7 +33,3 @@ if ($code -ne 0) {
     Write-Error "docker build falló con código $code"
     exit $code
 }
-
-# Ejemplos:
-# .\scripts\build-from-env.ps1                          # usa valores por defecto
-# .\scripts\build-from-env.ps1 -EnvFile .\env\dev.env -Dockerfile docker/http/apache+php/apache-php.dev.dockerfile -Tag myimage:dev
