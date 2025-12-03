@@ -17,7 +17,7 @@ RUN mkdir -p /var/www/${SERVER_NAME} \
     && chown -R apache:apache /var/www/${SERVER_NAME} \
     && chmod -R 755 /var/www/${SERVER_NAME}
 
-#COPY ./docker/http/apache+php/conf/httpd.conf /etc/apache2/httpd.conf
+COPY ./docker/http/apache+php/conf/httpd.conf /etc/apache2/httpd.conf
 COPY ./docker/http/apache+php/conf.d/php-xdebug.ini /etc/php82/conf.d/php-xdebug.ini
 COPY ./docker/http/apache+php/conf.d/*.conf /etc/apache2/conf.d/
 ENTRYPOINT ["httpd", "-D", "FOREGROUND"]

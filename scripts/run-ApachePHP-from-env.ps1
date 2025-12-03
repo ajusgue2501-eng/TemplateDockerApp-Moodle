@@ -1,17 +1,19 @@
+Param(
+    [string]$envFile = ".\env\dev.apachephp.env"
+)
 # Cargar variables de entorno desde el archivo
-$envFile = ".\env\dev.apachephp.env"
 $envVars = @{}
 
-if (Test-Path $envFile) {
-    Get-Content $envFile | ForEach-Object {
-        if ($_ -match '^\s*([^=]+)=(.*)$') {
-            $envVars[$matches[1]] = $matches[2]
-        }
-    }
-}
-else {
-    Write-Error "Archivo $envFile no encontrado"
+if (-not (Test-Path $envFile)) {
+    Write-Error "Archivo de entorno '$envFile' no encontrado."
     exit 1
+}
+
+
+Get-Content $envFile | ForEach-Object {
+    if ($_ -match '^\s*([^=]+)=(.*)$') {
+        $envVars[$matches[1]] = $matches[2]
+    }
 }
 
 # Configurar variables
