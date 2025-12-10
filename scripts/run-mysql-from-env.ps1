@@ -43,7 +43,7 @@ $dockerCmd = @(
     "--name $containerName",
     "-p $portMapping",
     "-v .\mysql_data:$dbDataDir",
-    "-v .\logs_mysql:$dbLogDir",
+    "-v .\mysql_logs:$dbLogDir",
     "--env-file $envFile",
     "--add-host=$hostEntry",
     "--hostname $containerName",
