@@ -10,7 +10,7 @@ EXPOSE ${SERVER_PORT}
 EXPOSE 9003
 
 RUN apk update && apk upgrade && \
-    apk --no-cache add apache2 apache2-utils apache2-proxy php82 php82-apache2 \
+    apk --no-cache add apache2 apache2-utils apache2-proxy php php-apache2 \
     php-curl php-gd php-mbstring php-intl php-mysqli php-xml php-zip \
     php-ctype php-dom php-iconv php-simplexml php-openssl php-sodium php-tokenizer php-xdebug
 RUN mkdir -p /var/www/${SERVER_NAME} \

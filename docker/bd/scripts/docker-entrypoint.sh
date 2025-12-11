@@ -8,13 +8,13 @@ fi
 
 # Arrancar MariaDB en segundo plano
 echo "Arrancando MariaDB..."
-mysqld_safe --user=${DB_USER} --datadir=${DB_DATADIR} &
+mariadbd-safe --user=${DB_USER} --datadir=${DB_DATADIR} &
 PID=$!
 
 # Esperar a que el servidor esté listo
 sleep 10
 
-mysql -u root <<EOF
+/usr/bin/mariadb -u root <<EOF
 ALTER USER 'root'@'localhost' IDENTIFIED BY '${DB_ROOT_PASS}';
 CREATE DATABASE ${DB_NAME} CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 CREATE USER '${DB_USER}'@'%' IDENTIFIED BY '${DB_PASS}';
