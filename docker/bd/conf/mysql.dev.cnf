@@ -1,72 +1,152 @@
+# Configuracion de MySQL 
 [mysqld]
-# MySQL Server Configuration for Moodle
 
-# Database Settings
+# Motor de almacenamiento por defecto que usara MySQL
 default-storage-engine=InnoDB
+
+# Character por defecto que usara MySQL, este soporta todos los caracteres y ademas de emojis
 character-set-server=utf8mb4
+
+# Colacion por defecto que usara MySQL, define las reglas de ordenacion y comparacion
 collation-server=utf8mb4_unicode_ci
+
+# Fuerza el uso del charset del servidor ignorando el que pida el cliente
 skip-character-set-client-handshake
 
-# Connection Settings
+# Ajustes de conexion
+# Numero maximo de conexiones simultaneas que acepta el servidor
 max_connections=200
+
+# Tamaño maximo de paquete permitido, importante para manejar datos grandes
 max_allowed_packet=64M
+
+# Tiempo maximo en segundos para establecer una conexion
 connect_timeout=10
+
+# Tiempo de espera de inactividad antes de cerrar una conexion (8 horas)
 wait_timeout=28800
+
+# Numero de errores de conexion permitidos antes de bloquear un host
 max_connect_errors=100
 
-# Table Cache
+# Cache de tablas
+# Numero de tablas abiertas que se guardan en cache
 table_open_cache=4000
+
+# Numero de definiciones de tablas que se guardan en cache
 table_definition_cache=2000
 
-# Query Optimization
+# Optimizacion de consultas
+# Desactiva el Query Cache ya que esta obsoleto en versiones modernas
 query_cache_type=0
+
+# Tamaño del Query Cache, al estar desactivado se deja en 0
 query_cache_size=0
 
-# InnoDB Settings (recommended for Moodle)
+# Configuracion de InnoDB recomendada para Moodle
+# Tamaño del buffer pool que almacena datos e indices en memoria
 innodb_buffer_pool_size=1G
+
+# Tamaño de cada archivo de log de InnoDB
 innodb_log_file_size=256M
+
+# Crea un archivo independiente por cada tabla
 innodb_file_per_table=1
+
+# Flushea los logs cada segundo, mejora rendimiento con ligera perdida ante fallo
 innodb_flush_log_at_trx_commit=2
+
+# Metodo de flush O_DIRECT para evitar doble cache
 innodb_flush_method=O_DIRECT
+
+# Tiempo maximo de espera por un bloqueo antes de dar error
 innodb_lock_wait_timeout=50
 
-# Performance Schema
+# Performance Schema para diagnostico
+# Activa el Performance Schema
 performance_schema=ON
+
+# Numero maximo de instancias de tablas instrumentadas
 performance_schema_max_table_instances=12500
 
-# Logging
+# Logs
+# Ruta del log de errores del servidor
 log_error=/var/log/mysql/error.log
+
+# Activa el log de consultas lentas
 slow_query_log=1
+
+# Ruta del log de consultas lentas
 slow_query_log_file=/var/log/mysql/slow.log
+
+# Tiempo minimo en segundos para considerar una consulta como lenta
 long_query_time=2
 
-# Binlog (for replication/backup)
+# Binlog para replicacion y backups
+# Activa el binlog y define la ruta
 log_bin=/var/log/mysql/mysql-bin.log
+
+# Formato del binlog en ROW para asegurar consistencia en replicacion
 binlog_format=ROW
+
+# Identificador unico del servidor en replicacion
 server_id=1
+
+# Numero de dias antes de purgar los binlogs
 expire_logs_days=10
 
-# Thread Settings
+# Configuracion de hilos
+# Tamaño del stack por cada hilo
 thread_stack=192K
+
+# Numero de hilos en cache para reutilizacion
 thread_cache_size=16
 
-# Moodle Specific Optimizations
+# Optimizaciones especificas para Moodle
+# Tamaño maximo de tablas temporales en memoria o disco
 tmp_table_size=32M
+
+# Limite para tablas temporales en memoria tipo HEAP
 max_heap_table_size=32M
+
+# Buffer por hilo para operaciones ORDER BY
 sort_buffer_size=2M
+
+# Buffer por hilo para lecturas secuenciales
 read_buffer_size=2M
+
+# Buffer por hilo para lecturas aleatorias tras ordenacion
 read_rnd_buffer_size=8M
+
+# Buffer por hilo para joins sin indice
 join_buffer_size=2M
 
+# Configuracion para mysqldump (herramienta de exportacion)
 [mysqldump]
+
+# Lectura rapida que reduce el uso de memoria
 quick
+
+# Entrecomilla nombres de tablas y columnas
 quote-names
+
+# Tamaño maximo de paquete permitido en exportacion
 max_allowed_packet=64M
+
+# Charset por defecto en exportacion
 default-character-set=utf8mb4
 
+# Configuracion para cliente mysql interactivo
 [mysql]
+
+# Charset por defecto en sesiones interactivas
 default-character-set=utf8mb4
 
+# Configuracion general para clientes (mysql, mysqldump, etc.)
 [client]
+
+# Charset por defecto para todos los clientes
 default-character-set=utf8mb4
+
+# Puerto TCP estandar de MySQL
 port=3306
