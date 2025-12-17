@@ -1,11 +1,18 @@
+# Si el modulo de estado esta disponible
 <IfModule status_module>
+
+    # Activa informacion extendida sobre el estado del servidor
     ExtendedStatus On
 
+    # Define la ruta /status para consultar el estado del servidor
     <Location "/status">
+        # Indica que esta ruta usara el manejador server-status
         SetHandler server-status
+        # Permite acceso a todos los usuarios
         Require all granted
 
-        # Para permitir acceso desde tu red interna:
+        # Ejemplo: para permitir acceso solo desde tu red interna
         # Require ip 192.168.1.0/24
     </Location>
+
 </IfModule>
