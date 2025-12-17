@@ -1,22 +1,25 @@
-# Define parameters with default values
+# Define parametro con ruta al archivo de entorno
 param(
     [string]$envFile = ".\env\dev.mysql.env"
 )
+
+# Inicializa diccionario para guardar variables de entorno
 $envVars = @{}
 
+# Verifica que el archivo de entorno exista
 if (-not (Test-Path $envFile)) {
     Write-Error "Env file '$envFile' not found."
     exit 1
 } 
+
+# Lee el archivo de entorno linea por linea y guarda clave=valor
 Get-Content $envFile | ForEach-Object {
     if ($_ -match '^\s*([^=]+)=(.*)$') {
         $envVars[$matches[1]] = $matches[2]
     }
 }
 
-
-# Configurar variables
-
+# Configura variables a partir del archivo de entorno
 $containerName = $envVars['DB_CONTAINER_NAME']
 #$dbName = $envVars['DB_NAME']
 #$dbUSer = $envVars['DB_USER']
@@ -29,16 +32,14 @@ $imageName = $envVars['DB_IMAGE_NAME']
 $networkName = $envVars['DB_NETWORK_NAME']
 $ip = $envVars["DB_IP"]
 
-
-
-# Eliminar contenedor si existe
+# Elimina el contenedor si ya existe
 if (docker ps -a --filter "name=^${containerName}$" --format "{{.Names}}" | Select-Object -First 1) {
     Write-Host "Eliminando contenedor existente: $containerName"
     docker stop $containerName 2>$null
     docker rm $containerName 2>$null
 }
 
-# Construir y ejecutar comando docker
+# Construye el comando docker run con todos los parametros
 $dockerCmd = @(
     "docker run -d",
     "--name $containerName",
@@ -53,5 +54,8 @@ $dockerCmd = @(
     $imageName
 ) -join ' '
 
+# Muestra el comando que se ejecutara
 Write-Host "Ejecutando: $dockerCmd"
+
+# Ejecuta el comando docker run
 Invoke-Expression $dockerCmd
